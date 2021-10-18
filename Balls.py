@@ -11,13 +11,17 @@ GREEN = (0, 255, 0)
 MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
+WIN_WIDTH = 1200
+WIN_HEIGHT = 800
+DISPLAY = (WIN_WIDTH, WIN_HEIGHT)
 
 class Ball:
 
-	def __init__(self, screen, color = (0, 0, 255)):
-		self.coord = [randint(100, 1100), randint(100, 700)]
+	def __init__(self, screen, color = BLUE):
+		self.coord = [randint(100, WIN_WIDTH - 70), randint(100, WIN_HEIGHT - 70)]
 		self.color = color
 		self.velocity = [randint(-7, 7), randint(-7, 7)]
 		self.r = randint(20, 40)
@@ -38,15 +42,15 @@ class Ball:
 	
 	def collision(self):
 		x0, y0 = self.coord
-		if 0 >= x0 - self.r or x0 + self.r >= 1200:
+		if 0 >= x0 - self.r or x0 + self.r >= WIN_WIDTH:
 			self.velocity[0] *= -1
-		elif 0 >= y0 - self.r or y0 + self.r >= 800:
+		elif 0 >= y0 - self.r or y0 + self.r >= WIN_HEIGHT:
 			self.velocity[1] *= -1
 
 class Square:
 
-	def __init__(self, screen, color = (255, 0, 0)):
-		self.coord = [randint(100, 1100), randint(100, 700)]
+	def __init__(self, screen, color = RED):
+		self.coord = [randint(100, WIN_WIDTH - 70), randint(100, WIN_HEIGHT - 70)]
 		self.color = color
 		self.r = randint(20, 40)
 		self.velocity = [randint(-10, 10), randint(-10, 10)]
@@ -66,9 +70,9 @@ class Square:
 	
 	def collision(self):
 		x0, y0 = self.coord
-		if 0 >= x0 - self.r or x0 + self.r >= 1200:
+		if 0 >= x0 - self.r or x0 + self.r >= WIN_WIDTH:
 			self.velocity[0] *= -1
-		elif 0 >= y0 - self.r or y0 + self.r >= 800:
+		elif 0 >= y0 - self.r or y0 + self.r >= WIN_HEIGHT:
 			self.velocity[1] *= -1
 
 balls = []
@@ -80,16 +84,16 @@ counted = 0
 name = input()
 
 FPS = 30
-screen = pygame.display.set_mode((1200, 800))
+screen = pygame.display.set_mode(DISPLAY)
 
 pygame.font.init()
 score = 0 
 text = pygame.font.SysFont('arial', 20)
-text1 = text.render('Счёт:' + str(score), False, (0, 0, 0))
+text1 = text.render('Счёт:' + str(score), False, BLACK)
 
 pygame.display.update()
 clock = pygame.time.Clock()
-screen.fill((255, 255, 255))
+screen.fill(WHITE)
 finished = False
 num = 0
 
@@ -142,11 +146,11 @@ while not finished and num <= 500:
     	ball.collision()
     	ball.move()
     	ball.appear(screen)
-    	text1 = text.render('Счёт:' + str(score), False, (0, 0, 0))
+    	text1 = text.render('Счёт:' + str(score), False, BLACK)
     	screen.blit(text1, (0, 200))
     
     pygame.display.update()
-    screen.fill((255, 255, 255))
+    screen.fill(WHITE)
 
 with open("Results.json", 'r') as f:
 	loaded = json.load(f)
